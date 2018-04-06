@@ -11,3 +11,10 @@ ALTER TABLE table_name DROP COLUMN column_name;
 
 # Get top 3 entries from table_name
 SELECT * FROM table_name LIMIT 3 OFFSET 1
+
+# Create new table and store output from a current table into it
+CREATE TABLE new_table_name AS
+SELECT t.* FROM old_table_name t JOIN new_record_ids r ON(r.id = t.id);
+
+# Export select query output into a external csv file
+Copy (Select * From table_name) To '/tmp/test.csv' With CSV DELIMITER ',';
