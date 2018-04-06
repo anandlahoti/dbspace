@@ -29,3 +29,5 @@ SELECT COLUMN1 FROM TABLE_NAME WHERE COLUMN2='23'
 -- Note the differnt single quotes used in the query
 INSERT INTO `TABLE1` (`COLUMN1`,`COLUMN2`,`COLUMN3`,`COLUMN4`) VALUES ('VALUE1','VALUE2','VALUE3','VALUE4')
 
+-- CREATE TABLE
+create table table_name(COLUMN1 int,COLUMN2 text,COLUMN3 text)
