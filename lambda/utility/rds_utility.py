@@ -1,8 +1,8 @@
 """Utility module for Aurora client."""
 import os
 import pymysql
-from util.logger_utility import LoggerUtility
-from util.common_constants import EnvironmentVariables, Constants
+from utility.logger_utility import LoggerUtility
+from utility.common_constants import EnvironmentVariables, Constants
 
 
 class RDSUtility:
