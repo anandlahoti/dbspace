@@ -1,7 +1,11 @@
 # Commands to be run from pgsql
 
+# Local machine setup
 # COPY CSV DATA FROM CSV FILE to Postgres table
 COPY swipedata(COLUMN1, COLUMN2, ... COLUMN*) FROM '/var/lib/pgsql/data/<NAME-OF-CSV-FILE>.csv' DELIMITER '|' CSV HEADER;
+
+# Remotely copy csv file to new location of postgres
+psql -h <HOSTNAME> -d <DB-NAME> -U <USER> -c "\copy mytable (column1, column2)  from '/path/to/local/file.csv' with delimiter as ','"
 
 # Count No. of Rows in a table
 SELECT count(*) FROM table_name;
