@@ -18,3 +18,11 @@ SELECT t.* FROM old_table_name t JOIN new_record_ids r ON(r.id = t.id);
 
 # Export select query output into a external csv file
 Copy (Select * From table_name) To '/tmp/test.csv' With CSV DELIMITER ',';
+
+# Drop multiple columns in a table
+ALTER TABLE table_name DROP COLUMN col1, DROP COLUMN col2;
+
+# Replace values in a column in a table
+UPDATE <table-name> SET <COLUMN-NAME> = replace(<COLUMN-NAME>, 'old-text', 'new-text')
+
+-- Ref - http://sqlfiddle.com/#!15/e345e
