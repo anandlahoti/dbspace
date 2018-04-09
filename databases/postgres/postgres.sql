@@ -1,4 +1,6 @@
 # Commands to be run from pgsql
+# Use pv utility always while copies
+# For pv utility, Ref - http://www.ivarch.com/programs/pv.shtml
 
 # Local machine setup
 # COPY CSV DATA FROM CSV FILE to Postgres table
