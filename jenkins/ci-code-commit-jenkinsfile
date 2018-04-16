@@ -1,0 +1,208 @@
+#!/usr/bin/env groovy
+def setJobProperties() {
+  properties([
+  ])
+}
+pipeline {
+  agent {
+    node {
+      label 'master'
+    }
+  }
+  environment {    
+    PYTHON_CMD = '/usr/local/bin/python3.6'
+    PIP_CMD = '/usr/local/bin/pip3.6'
+    PYCODESTYLE_CMD = 'pycodestyle'
+    PYDOCSTYLE_CMD = 'pydocstyle'      
+    PYLINT_CMD = 'pylint'
+    COVERAGE_CMD = 'coverage'
+    JAVA_HOME = '/usr/lib/jvm/java/'
+  }
+  stages {
+    stage('Set job properties') {
+      steps {
+        setJobProperties()
+      }
+    }
+    stage('Java UT') {
+      steps{
+        script {
+          try {
+            echo "\u001B[34m\u001B[1mJava UT Check\u001B[0m"
+            sh  """
+            #!/bin/bash            
+            set -e
+            cd xxxx/
+            mvn dependency:purge-local-repository
+            # Run with Java 1.7
+            mvn clean verify -Dmaven.compiler.source=1.7 -Dmaven.compiler.target=1.7
+            mvn clean test -Dmaven.compiler.source=1.7 -Dmaven.compiler.target=1.7
+            mvn clean clover:setup test clover:aggregate clover:clover
+            """
+            println "\u001B[32mJava Code UT Check completed successfully\u001B[0m"
+            }
+          catch (Exception e) {
+              println "\u001B[31mJava UT Check failed. Please fix the issues\u001B[0m"
+              sh "exit 1"
+          }
+        }
+        step([
+            $class: 'CloverPublisher',
+            cloverReportDir: 'xxxx/target/site/clover',
+            cloverReportFileName: 'clover.xml',
+            healthyTarget: [methodCoverage: 70, conditionalCoverage: 80, statementCoverage: 80],
+            unhealthyTarget: [methodCoverage: 50, conditionalCoverage: 50, statementCoverage: 50],
+            failingTarget: [methodCoverage: 0, conditionalCoverage: 0, statementCoverage: 0]
+            ])
+      }
+    }
+    stage('Python Code Style Linting') {
+      steps{
+        script {
+          try {
+            echo "\u001B[34m\u001B[1mCode Style Linting\u001B[0m"
+            sh  """
+            #!/bin/bash            
+            set -e
+
+            ${PYTHON_CMD} -m ${PYCODESTYLE_CMD} xxx/*.py            
+            """
+            println "\u001B[32mCode Style Linting completed successfully\u001B[0m"
+            }
+          catch (Exception e) {
+              println "\u001B[31mCode style linting failed. Please fix the issues\u001B[0m"
+              sh "exit 1"
+          }
+        }
+      }
+    }
+    stage('Python Doc style linting') {
+      steps{
+        script {
+          try {
+            echo "\u001B[34m\u001B[1mDocstring Style Linting\u001B[0m"
+            sh  """
+            #!/bin/bash
+            set -e
+
+            ${PYTHON_CMD} -m ${PYDOCSTYLE_CMD} xxxx/*.py                        
+            """
+            println "\u001B[32mDocstring Style Linting completed successfully\u001B[0m"
+            }
+          catch (Exception e) {
+              println "\u001B[31mDoc style linting failed. Please fix the issues\u001B[0m"
+              sh "exit 1"
+          }
+        }
+      }
+    }
+    stage('Python Pylint') {
+      steps{
+        script {
+          try {
+            echo "\u001B[34m\u001B[1mPylinting\u001B[0m"
+            sh  """
+            #!/bin/bash
+            set -e
+            
+            ${PYTHON_CMD} -m ${PYLINT_CMD} --output-format=colorized util/*.py
+
+            cp -r util/ xxxx/
+            cd xxx/
+            ${PYTHON_CMD} -m ${PYLINT_CMD} --output-format=colorized *.py
+
+            cd ..
+            cp -r util/ yyyyy/
+            cd yyyyy/
+            ${PYTHON_CMD} -m ${PYLINT_CMD} --output-format=colorized *.py                        
+            """
+            println "\u001B[32mPylint completed successfully\u001B[0m"
+            }
+          catch (Exception e) {
+              println "\u001B[31mPylinting failed. Please fix the issues\u001B[0m"
+              sh "exit 1"
+          }
+        }
+      }
+    }
+    stage('Python Tests') {
+      steps{
+        script {
+          try {
+            echo "\u001B[34m\u001B[1mrunning the tests \u001B[0m"
+            sh  """
+            #!/bin/bash
+            
+            cp -r util/ xxxx/
+            cd xxxx/
+            ${PYTHON_CMD} -m  ${COVERAGE_CMD} run --source=./ -m pytest -s tests/
+            ${PYTHON_CMD} -m  ${COVERAGE_CMD} report -m
+
+            cd ..
+            cp -r util/ yyyy/
+            cd yyyy/
+            ${PYTHON_CMD} -m  ${COVERAGE_CMD} run --source=./ -m pytest -s tests/
+            ${PYTHON_CMD} -m  ${COVERAGE_CMD} report -m
+            
+            """
+            println "\u001B[32mPython tests completed successfully\u001B[0m"
+            }
+          catch (Exception e) {
+              println "\u001B[31mTests failed\u001B[0m"
+              sh "exit 1"
+          }
+        }
+      }
+    }
+    stage('Copy Artifacts to S3') {
+      steps{
+        script {
+          try {
+            echo "\u001B[34m\u001B[1mCopy Artifacts to S3\u001B[0m"
+            sh  '''
+            #!/bin/bash            
+            set -e
+            CURRENT_TIME="$(date "+%F-%T")"
+            GIT_BRANCH_COMMIT_ID="$(git log --format="%H" -n 1)"
+            GIT_BRANCH_NAME="$(git name-rev "${GIT_BRANCH_COMMIT_ID}")"
+            GIT_BRANCH="$(echo "${GIT_BRANCH_NAME}" | cut -d' ' -f2- | cut -d'/' -f3-)"
+            if [[ $GIT_BRANCH == develop ]];
+            then
+                echo "Found Develop Branch"
+                cp -r util/ xxxx/                
+                
+                ${PIP_CMD} install --no-deps -r xxxx/requirements.txt -t xxxx/                
+                
+                cd xxxx/
+                mvn clean install
+                mv target/xxxx-0.0.1-SNAPSHOT.jar target/${CURRENT_TIME}-xxxx-0.0.1-SNAPSHOT.jar
+                aws s3 cp target/${CURRENT_TIME}-KinesisProducer-0.0.1-SNAPSHOT.jar s3://S3-BUCKET-NAME/ARTIFACTS/xxxx/
+                cd ../..
+                
+
+                zip -jr ${CURRENT_TIME}-xxxx.zip xxxx/ -x /*__pycache__/*                
+
+                
+                aws s3 cp ${CURRENT_TIME}-xxx.zip s3://S3-BUCKET-NAME/ARTIFACTS/xxxx/
+                
+                echo "All artifacts successfully transferred to S3"
+            else
+                echo "Not Develop Branch. Skipping ...."
+            fi
+            '''
+            println "\u001B[32mCopy S3 artifacts completed successfully\u001B[0m"
+            }
+          catch (Exception e) {
+              println "\u001B[31mCopy S3 artifacts failed.\u001B[0m"
+              sh "exit 1"
+          }
+        }
+      }
+    }
+  }  
+ post {
+    always {
+    deleteDir()
+    }
+  }
+}
