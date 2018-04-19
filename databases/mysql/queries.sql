@@ -34,3 +34,6 @@ create table table_name(COLUMN1 int,COLUMN2 text,COLUMN3 text)
 
 -- ALTER COLUMN TYPE
 ALTER TABLE tablename MODIFY columnname INTEGER;
+
+-- ADD Column after another column
+ALTER table tablename Add COLUMN COLUMN1 varchar(500) AFTER COLUMN2
