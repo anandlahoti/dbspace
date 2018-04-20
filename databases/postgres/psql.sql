@@ -20,3 +20,7 @@ SELECT row_to_json(r) FROM table_name AS r;
 
 # Check the file using
 # cat file.json on local system
+
+# Force Quit from psql
+Ctrl + \
+
