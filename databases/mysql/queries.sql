@@ -37,3 +37,6 @@ ALTER TABLE tablename MODIFY columnname INTEGER;
 
 -- ADD Column after another column
 ALTER table tablename Add COLUMN COLUMN1 varchar(500) AFTER COLUMN2
+
+-- Modify column to accept null values
+alter table tablename MODIFY COLUMN COLUMN1 VARCHAR(50) NULL
