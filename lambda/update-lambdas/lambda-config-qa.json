@@ -1,0 +1,163 @@
+[    
+  {
+      "FunctionName": "xxxxxxxxxxxx",
+      "Handler": "app.APP",
+      "Runtime": "python3.6",
+      "Timeout": 300,
+      "Role": "arn:aws:iam::xxxxxxx:role/xxxxxxxxxxxx",
+      "VpcConfig": {
+        "SubnetIds": ["subnet-xxxxxx", "subnet-xxxxx"],
+        "SecurityGroupIds": ["sg-xxxxxx"]
+      },
+      "Environment": {
+          "Variables": {
+          "CLIENT_ID": "xxxxxxxxxxx",
+          "LOG_LEVEL": "DEBUG",
+          "REDIS_ENDPOINT": "xxxxxxxxxxxx",
+          "REDIS_PORT_NO": "6379",
+          "USER_POOL_ID": "xxxxxxxxxxx"
+        }
+      }
+
+    },
+    {        
+      "FunctionName": "xxxxxx",
+      "Handler": "app.APP",
+      "Runtime": "python3.6",
+      "Timeout": 300,
+      "Role": "arn:aws:iam::xxxxxxxxxxx:role/xxxxxxxxxxxx",
+      "VpcConfig": {
+        "SubnetIds": ["subnet-xxxxxxxx", "subnet-xxxxxxxxx"],
+        "SecurityGroupIds": ["sg-xxxxx"]
+      },
+      "Environment": {
+          "Variables": {
+          "LOG_LEVEL": "DEBUG",
+          "PROCESSED_DATA_BUCKET_NAME": "xxxxxxxxx",
+          "RDS_DB_ENDPOINT":  "xxxxxxxxxx",
+          "RDS_DB_NAME": "xxxxx",
+          "RDS_DB_PASSWORD": "xxxxx",
+          "RDS_DB_USERNAME": "xxxxx",
+          "REDIS_ENDPOINT": "xxxxxxxxxxxx",
+          "REDIS_PORT_NO": "6379"
+        }
+      }
+    },    
+    {
+      "FunctionName": "xxxxxxxxxxxx",
+      "Handler": "xxxxxxxxxxxx.lambda_handler",
+      "Runtime": "python3.6",
+      "Timeout": 300,
+      "Role": "arn:aws:iam::xxxxxxxxx:role/xxxxxxxxxxxx",
+      "VpcConfig": {
+        "SubnetIds": ["subnet-xxxxx", "subnet-xxxxxxxx"],
+        "SecurityGroupIds": ["sg-xxxxxx"]
+      },
+      "Environment": {
+          "Variables": {
+          "LOG_LEVEL": "DEBUG",
+          "PROCESSED_DATA_BUCKET_NAME": "xxxxxxx",
+          "OLD_DATA_BUCKET_NAME": "xxxxxxxx",
+          "RAW_DATA_BUCKET_NAME": "xxxxxxx",
+          "UNHANDLED_DATA_BUCKET_NAME": "xxxxxxxxx",
+          "REDIS_ENDPOINT": "xxxxxxxxxxxxxxxx",
+          "REDIS_PORT_NO": "6379"
+        }
+      }
+    },
+    {
+      "FunctionName": "xxxxxxxxxxxx",
+      "Handler": "xxxxxxxxxx.lambda_handler",
+      "Runtime": "python3.6",
+      "Timeout": 300,
+      "Role": "arn:aws:iam::xxxxxxxxxxx:role/xxxxxxxxxxxx",
+      "VpcConfig": {
+        "SubnetIds": ["subnet-xxxxxxxxxx", "subnet-xxxxxxxxxxxx"],
+        "SecurityGroupIds": ["sg-xxxxxxxxxxxx"]
+      },
+      "Environment": {
+          "Variables": {
+          "LOG_LEVEL": "DEBUG",
+          "PROCESSED_DATA_BUCKET_NAME": "xxxxxxxxxxxx",
+          "OLD_DATA_BUCKET_NAME": "xxxxxxxxxxxx",          
+          "UNHANDLED_DATA_BUCKET_NAME": "xxxxxxxxxxxx",
+          "RDS_DB_ENDPOINT":  "xxxxxxxxxxxx",
+          "RDS_DB_NAME": "xxxxxxxxxxxx",
+          "RDS_DB_PASSWORD": "xxxxxxxxxxxx123",
+          "RDS_DB_USERNAME": "xxxxxxxxxxxx",
+          "REDIS_ENDPOINT": "xxxxxxxxxxxx",
+          "REDIS_PORT_NO": "6379"
+        }
+      }
+    },
+    {
+      "FunctionName": "xxxxxxxxxxxx",
+      "Handler": "xxxxxxxxxx.lambda_handler",
+      "Runtime": "python3.6",
+      "Timeout": 300,
+      "Role": "arn:aws:iam::xxxxxxxxxxxx:role/xxxxxxxxxxxx",
+      "VpcConfig": {
+        "SubnetIds": ["subnet-xxxxxxxxxxxx", "subnet-xxxxxxxxxxxx"],
+        "SecurityGroupIds": ["sg-xxxxxxxxxxxx"]
+      },
+      "Environment": {
+          "Variables": {
+          "LOG_LEVEL": "DEBUG",
+          "PROCESSED_DATA_BUCKET_NAME": "xxxxxxxxxxxx",                  
+          "UNHANDLED_DATA_BUCKET_NAME": "xxxxxxxxxxxx",
+          "RDS_DB_ENDPOINT":  "xxxxxxxxxxxx",
+          "RDS_DB_NAME": "xxxxxxxxxxxx",
+          "RDS_DB_PASSWORD": "xxxxxxxxxxxx123",
+          "RDS_DB_USERNAME": "xxxxxxxxxxxx",
+          "REDIS_ENDPOINT": "xxxxxxxxxxxx",
+          "REDIS_PORT_NO": "6379"
+        }
+      }
+    },
+    {
+      "FunctionName": "xxxxxxxxxx",
+      "Handler": "service.handler",
+      "Timeout": 300,
+      "Runtime": "python3.6"
+    },
+    {
+      "FunctionName": "xxxxxxxxxx",
+      "Handler": "app.APP",
+      "Runtime": "python3.6",
+      "Timeout": 300,
+      "Role": "arn:aws:iam::xxxxxxxxxxxx:role/xxxxxxxxxxxx",
+      "VpcConfig": {
+        "SubnetIds": ["subnet-xxxxxxxxxxxx", "subnet-xxxxxxxxxxxx"],
+        "SecurityGroupIds": ["sg-xxxxxxxxxxxx"]
+      },
+      "Environment": {
+          "Variables": {
+          "DAY_STATUS_TABLE_NAME": "DAY_STATUS",
+          "LOG_LEVEL": "DEBUG",
+          "RDS_DB_ENDPOINT":  "xxxxxxxxxxxx",
+          "RDS_DB_NAME": "xxxxxxxxxxxx",
+          "RDS_DB_PASSWORD": "xxxxxxxxxxxx123",
+          "RDS_DB_USERNAME": "xxxxxxxxxxxx",
+          "REDIS_ENDPOINT": "xxxxxxxxxxxx",
+          "REDIS_PORT_NO": "6379",
+          "PROCESSED_DATA_BUCKET_NAME": "xxxxxxxxxxxx"
+        }
+      }
+    },
+    {
+      "FunctionName": "xxxxxxxxxxxx",
+      "Handler": "xxxxxxxxxxxxxxx.lambda_handler",
+      "Runtime": "python3.6",
+      "Timeout": 300,
+      "Role": "arn:aws:iam::xxxxxxxxxxxx:role/xxxxxxxxxxxx",
+      "VpcConfig": {
+        "SubnetIds": ["subnet-xxxxxxxxxxxx", "subnet-xxxxxxxxxxxx"],
+        "SecurityGroupIds": ["sg-xxxxxxxxxxxx"]
+      },
+      "Environment": {
+          "Variables": {
+          "LOG_LEVEL": "DEBUG"
+        }
+      }
+    }
+]
