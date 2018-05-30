@@ -1,5 +1,8 @@
 #!/bin/bash
 #
+# Pre-requisites:
+# pip3 install virtualenv
+#
 # Source does not work inside a script
 # Ref - https://stackoverflow.com/questions/7369145/activating-a-virtualenv-using-a-shell-script-doesnt-seem-to-work
 #
